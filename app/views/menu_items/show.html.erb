@@ -1,0 +1,10 @@
+<h1><%= @item[:tiem] %></h1>
+<h3>$<%= '%.2f' % @item[:price] %></h3>
+<p>Quantity: <%= @item[:quality].to_i %></p>
+<hr>
+<p><%= link_to 'Delete!',menu_item_path(@item), method: 'delete', data: {confirm: "Are your sure?"} %></p>
+
+
+<div>
+    <%= link_to 'Back', '/menu_items' %>
+</div>
