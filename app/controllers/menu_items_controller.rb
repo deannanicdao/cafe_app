@@ -1,7 +1,10 @@
 class MenuItemsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :check_roles
+  before_action :set_item, only: [:show, :update, :edit, :destroy]
+  # before_action :authenticate_user!, except: [:index]
   # skip_before_action :verify_authenticity_token
   #protecing user data authenticty token, rails generates this specifically
-  before_action :set_item, only: [:show, :update, :edit, :destroy]
   #only want this set item method to run before these actions becuase theya re the only ones who need the instance variable
   def index
    @items = MenuItem.order(:tiem)
@@ -38,6 +41,13 @@ class MenuItemsController < ApplicationController
     # item = MenuItem.find(params[:id])
     @item.destroy
     redirect_to menu_items_path
+  end
+
+  def check_roles
+    if !(user_signed_in? && current_user.has_role?(:admin))
+      flash[:alert] = "You are not authorized to access that page."
+      redirect_to root_path
+    end
   end
 
   private
